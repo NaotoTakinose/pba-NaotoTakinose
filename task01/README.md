@@ -43,6 +43,10 @@ Save the screenshot image overwriting `task01/problem2.png`
 
 ![problem2](problem2.png)
 
+*Since the results for the red line were too far off from the blue line, I have also included the results with a smaller dt as a supplement to this assignment. (dt=0.00004f)
+
+![dt=0.00004f](dt=0.00004f.png)
+
 
 ## After Doing the Assignment
 

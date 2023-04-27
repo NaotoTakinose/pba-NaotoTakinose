@@ -40,8 +40,8 @@ Eigen::Vector2f time_integration_implicit(const Eigen::Vector2f& p0, float dt){
   Eigen::Matrix2f A;
   Eigen::Vector2f b;
   // modify the following two lines to implement implicit time integration
-  A << 1.f, 0.f, 0.f, 1.f;
-  b << r0, v0;
+  A << 1.f, -dt, -dfdr*dt, 1.f;
+  b << r0, v0 + dt*f0-dt*dfdr*r0;
   return A.inverse()*b;
 }
 
@@ -73,7 +73,7 @@ int main()
   GLFWwindow* window = pba::window_initialization("task01: implicit integration");
 
   float time = 0.f;
-  float dt = 0.04f; // time step
+  float dt = 0.00004f; // time step
   Eigen::Vector2f phase_explicit(0.7f, 0.f);
   Eigen::Vector2f phase_implicit(0.7f, 0.f);
   std::vector<Eigen::Vector2f> history_explicit, history_implicit;
@@ -82,7 +82,7 @@ int main()
   {
     pba::default_window_2d(window);
 
-    if( history_implicit.size() < 300 ) {
+    if( history_implicit.size() < 300000 ) {
       phase_explicit = time_integration_explicit(phase_explicit, dt);
       phase_explicit = reflection(phase_explicit);
 
