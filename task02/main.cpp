@@ -56,13 +56,13 @@ void collide_particle_ball(
   //             no friction. You do not need to change the positions.
 
   // comment out the line below
-  p.velo -= 2.f * (p.velo - ball_velo).dot(plane_norm) * plane_norm;
+  //p.velo -= 2.f * (p.velo - ball_velo).dot(plane_norm) * plane_norm;
 
   // write a few lines of code to compute the velocity of ball and particle
   // please uncomment the lines below
-  // const Eigen::Vector2f impulse =
-  // p.velo +=
-  // ball_velo +=
+  const Eigen::Vector2f impulse =(p.velo - ball_velo).dot(plane_norm) * plane_norm;
+  p.velo -= impulse * 2.0f * ball_mass/ (particle_mass + ball_mass);  
+  ball_velo += impulse * 2.0f * particle_mass/ (particle_mass + ball_mass); 
 }
 
 /**
@@ -99,11 +99,12 @@ int main() {
   std::vector<Eigen::Vector2f> trajectory;
 
   // particle information
-  std::vector<Particle> particles(100);
+  std::vector<Particle> particles(1000);
+  srand((unsigned) time(NULL));
   for (auto &p: particles) {
     // initialization
     // particle should be put outside the ball at the beginning
-    for (unsigned int itr = 0; itr < 100; ++itr) {
+    for (unsigned int itr = 0; itr < 1000; ++itr) {
       p.pos.setRandom();
       p.pos *= box_size * 0.5f;
       if (p.pos.norm() > ball_rad) { break; }
@@ -122,7 +123,7 @@ int main() {
   while (!::glfwWindowShouldClose(window)) {
     pba::default_window_2d(window);
 
-    if (trajectory.size() < 3000) {
+    if (trajectory.size() < 30000) {
       ball_pos += ball_velo * dt; // step time for ball
       // collision between ball and the walls
       collision_circle_plane(ball_pos, ball_velo, ball_rad, {-box_size * 0.5f, 0.f}, {+1.f, 0.f}); // left wall
