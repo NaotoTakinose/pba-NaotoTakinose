@@ -43,10 +43,10 @@ After running the program for a while, save the screenshot image overwriting `ta
 ![problem2](problem2.png)
 
 I did a little additional experimentation.
-First, the random seed value is now generated from the current time to avoid the same placement. Also, since the experiment time was short, we changed the time to 30,000 steps, which is 10 times the experiment time. The result is as follows.
+First, the random seed value is generated from the current time to avoid the same placement. Also, since the experiment time was short, I changed the time to 30,000 steps, which is 10 times the experiment time. The result is as follows.
 ![add1](add1.png)
 
-Furthermore, the number of particles was low, so we set the number to 1,000, resulting in the following results.
+Furthermore, the number of particles was low, so I set the number to 1,000. The result is as follows.
 ![add2](add2.png)
 The more particles there are, the smaller the motion because many forces act from many directions.
 
