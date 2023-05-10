@@ -188,7 +188,7 @@ int main() {
   constexpr unsigned int num_div = 30;
 
   // particle information
-  std::vector<Particle> particles(5000); // change the number of particles here
+  std::vector<Particle> particles(20000); // change the number of particles here
   for (auto &p: particles) {
     // initialization
     p.pos.setRandom();
