@@ -83,11 +83,12 @@ void wdw_volume_tri_origin(
     Eigen::Vector3d dw[3],
     const Eigen::Vector3d node2xyz[3]) {
   w = 1./6.*node2xyz[0].dot(node2xyz[1].cross(node2xyz[2]));
+  //wには対称性があり、1./6.*node2xyz[1].dot(node2xyz[2].cross(node2xyz[0])), 1./6.*node2xyz[2].dot(node2xyz[0].cross(node2xyz[1]))も同じ値である。
   // ------------------------------
   // Write some code below to compute differentiation. Keep it simple and understandable
-  // dw[0] =
-  // dw[1] =
-  // dw[2] =
+  dw[0] = 1./6.*(node2xyz[1].cross(node2xyz[2]));
+  dw[1] = 1./6.*(node2xyz[2].cross(node2xyz[0]));
+  dw[2] = 1./6.*(node2xyz[0].cross(node2xyz[1]));
 }
 
 void inflate(
@@ -150,13 +151,18 @@ void inflate(
     // -------------------------
     // write some code below to set values in the linear system to set constraint to specify volume
     // write some code including 'w'
+    ddW(num_vtx * 3, num_vtx * 3) += w;
+    dW(num_vtx * 3) += lambda * w;
     for (unsigned int inode = 0; inode < 3; ++inode) {
       for (unsigned int idim = 0; idim < 3; ++idim) {
         // write some code including `dw` and `lambda`
+        ddW(inode *3 + idim, inode * 3 + idim) += dw[inode](idim);
+        dW(inode *3 + idim) += lambda * dw[inode](idim);
       }
     }
   }
   // Do not forget to write one line of code here
+  lambda+=0.00001;
   // -------------------------------------------------
   // Do not change below
   // damping for stable convergence
