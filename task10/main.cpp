@@ -107,8 +107,15 @@ int main() {
         time += dt;
         // Write some code below to simulate rotation of the rigid body
         // Use the **forward Euler method** to update the rotation matrix and the angular velocity
-        // rotation =
-        // Omega =
+        Eigen::Matrix3f skewOmega;
+        skewOmega << 0, -Omega(2), Omega(1),
+                     Omega(2), 0, -Omega(0),
+                     -Omega(1), Omega(0), 0;
+        //二行で書けということでしたが、skewOmegaを求める方法がわからず、手動で設定しました...
+        //skewOmega = Omega.cross(inertia * Omega) * inertia.inverse() * Omega.inverse();だと思ったのですが、エラーが出てしまいます。
+        rotation = rotation + dt * rotation * skewOmega;
+        Omega = Omega - dt * inertia.inverse() * Omega.cross(inertia * Omega); 
+        //Omega = Omega - dt * inertia.inverse() * skewOmega * inertia * Omega;でも可能
         // Do not change anything else except for the two lines above.
       }
       std::cout << "time: " << time << std::endl;
